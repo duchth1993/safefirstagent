@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConsoleRouteImport } from './routes/console'
 import { Route as RecapRouteImport } from './routes/recap'
 import { Route as SafetyRouteImport } from './routes/safety'
 import { Route as WorkflowRouteImport } from './routes/workflow'
@@ -17,6 +18,11 @@ import { Route as WorkflowRouteImport } from './routes/workflow'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConsoleRoute = ConsoleRouteImport.update({
+  id: '/console',
+  path: '/console',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecapRoute = RecapRouteImport.update({
@@ -37,12 +43,14 @@ const WorkflowRoute = WorkflowRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/console': typeof ConsoleRoute
   '/recap': typeof RecapRoute
   '/safety': typeof SafetyRoute
   '/workflow': typeof WorkflowRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/console': typeof ConsoleRoute
   '/recap': typeof RecapRoute
   '/safety': typeof SafetyRoute
   '/workflow': typeof WorkflowRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/console': typeof ConsoleRoute
   '/recap': typeof RecapRoute
   '/safety': typeof SafetyRoute
   '/workflow': typeof WorkflowRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/recap' | '/safety' | '/workflow'
+  fullPaths: '/' | '/console' | '/recap' | '/safety' | '/workflow'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/recap' | '/safety' | '/workflow'
-  id: '__root__' | '/' | '/recap' | '/safety' | '/workflow'
+  to: '/' | '/console' | '/recap' | '/safety' | '/workflow'
+  id: '__root__' | '/' | '/console' | '/recap' | '/safety' | '/workflow'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConsoleRoute: typeof ConsoleRoute
   RecapRoute: typeof RecapRoute
   SafetyRoute: typeof SafetyRoute
   WorkflowRoute: typeof WorkflowRoute
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/console': {
+      id: '/console'
+      path: '/console'
+      fullPath: '/console'
+      preLoaderRoute: typeof ConsoleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recap': {
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConsoleRoute: ConsoleRoute,
   RecapRoute: RecapRoute,
   SafetyRoute: SafetyRoute,
   WorkflowRoute: WorkflowRoute,

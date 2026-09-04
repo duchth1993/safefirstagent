@@ -56,7 +56,7 @@ function RecapPage() {
 
   const copyPrompt = async () => {
     try {
-      await navigator.clipboard.writeText(DEMO_PROMPTS[0]);
+      await navigator.clipboard.writeText(DEMO_PROMPTS[0] ?? "");
       setCopied(true);
       toast.success("Demo prompt copied");
       setTimeout(() => setCopied(false), 1800);
